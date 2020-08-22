@@ -43,10 +43,15 @@ module.exports.setup = function(app) {
         res.render('auth-end', { clientId: clientId });
     }); 
 
+    app.post('/auth/token2', function(req, res) {
+      res.json({"test": "123"});
+    });
     // On-behalf-of token exchange
     app.post('/auth/token', function(req, res) {
 
-
+      
+      res.json({"test": "456"});
+      return;
         var tid = req.body.tid;
         var token = req.body.token;
         var scopes = req.body.scopes;
