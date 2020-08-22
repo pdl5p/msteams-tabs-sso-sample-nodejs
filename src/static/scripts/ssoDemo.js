@@ -2,6 +2,8 @@
     'use strict';
 
     var clientToken = "";
+    var sharePointDomain = "";
+
     // 1. Get auth token
     // Ask Teams to get us a token from AAD
     function getClientSideToken() {
@@ -77,6 +79,8 @@
 
             microsoftTeams.getContext((context) => {
 
+                sharePointDomain = `https://${context.teamSiteDomain}`;
+
                 fetch('/auth/token', {
                     method: 'post',
                     headers: {
@@ -141,7 +145,7 @@
     function useSharePointToken(token){
         display("5. Use SharePoint token");
 
-        return fetch("https://pdl5p.sharepoint.com/_api/web",
+        return fetch(`${sharePointDomain}/_api/web`,
             {
                 method: 'GET',
                 headers: {
