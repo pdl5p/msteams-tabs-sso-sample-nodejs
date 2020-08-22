@@ -33,7 +33,7 @@ module.exports.setup = function(app) {
 
     // Pop-up dialog to ask for additional permissions, redirects to AAD page
     app.get('/auth/auth-start', function(req, res) {
-        var clientId = config.get("tab.appId");
+        var clientId = "f5e478ee-77eb-4613-85f9-3b8bd32c1d1f";
         res.render('auth-start', { clientId: clientId });
     });
 
@@ -42,10 +42,6 @@ module.exports.setup = function(app) {
         var clientId = "f5e478ee-77eb-4613-85f9-3b8bd32c1d1f";
         res.render('auth-end', { clientId: clientId });
     }); 
-
-    app.post('/auth/token2', function(req, res) {
-      res.json({"test": "123"});
-    });
     // On-behalf-of token exchange
 
     app.post('/auth/token', function(req, res) {
@@ -61,28 +57,11 @@ module.exports.setup = function(app) {
         assertion: token,
         requested_token_use: "on_behalf_of",
         scope: scopes.join(" ")
-    }
-
-      // res.json(params);
-      // return;
-        
+      }
 
         var oboPromise = new Promise((resolve, reject) => {
 
             const url = "https://login.microsoftonline.com/" + tid + "/oauth2/v2.0/token";
-            // const params = {
-            //     client_id: config.get("tab.appId"),
-            //     client_secret: config.get("tab.appPassword"),
-            //     grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-            //     assertion: token,
-            //     requested_token_use: "on_behalf_of",
-            //     scope: scopes.join(" ")
-            // };
-
-            // resolve(params);
-            // return;
-        
-            console.log("getting token", params.scope);
 
             fetch(url, {
               method: "POST",
