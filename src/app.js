@@ -8,11 +8,11 @@ var app = express();
 // tabs.setup(app);
 var port = process.env.PORT || 3333;
 
+
 app.get('/', function(req, res) {
     res.send(`hello ${port}`);
 });
 
-// Decide which port to use
 
 // Listen for incoming requests
 app.listen(port, function() {

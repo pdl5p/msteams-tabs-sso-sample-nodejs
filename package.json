@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Microsoft Teams Node.js Hello World App. Start here to build your first app on the Teams platform.",
   "scripts": {
-    "start": "node src/index.js",
+    "start": "node src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
