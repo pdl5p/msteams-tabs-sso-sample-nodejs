@@ -54,31 +54,33 @@ module.exports.setup = function(app) {
       var token = req.body.token;
       var scopes = req.body.scopes;
       
-      res.json({
-        client_id: "",
-        client_secret: "",
+      const params = {
+        client_id: "f5e478ee-77eb-4613-85f9-3b8bd32c1d1f",
+        client_secret: "~Wt_jr-_Po7_3j.mA8-BAAXuVY7o8~t5OQ",
         grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
         assertion: token,
         requested_token_use: "on_behalf_of",
         scope: scopes.join(" ")
-    });
-      return;
+    }
+
+      // res.json(params);
+      // return;
         
 
         var oboPromise = new Promise((resolve, reject) => {
 
             const url = "https://login.microsoftonline.com/" + tid + "/oauth2/v2.0/token";
-            const params = {
-                client_id: config.get("tab.appId"),
-                client_secret: config.get("tab.appPassword"),
-                grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-                assertion: token,
-                requested_token_use: "on_behalf_of",
-                scope: scopes.join(" ")
-            };
+            // const params = {
+            //     client_id: config.get("tab.appId"),
+            //     client_secret: config.get("tab.appPassword"),
+            //     grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
+            //     assertion: token,
+            //     requested_token_use: "on_behalf_of",
+            //     scope: scopes.join(" ")
+            // };
 
-            resolve(params);
-            return;
+            // resolve(params);
+            // return;
         
             console.log("getting token", params.scope);
 
