@@ -6,13 +6,13 @@ var app = express();
 // Add the route for handling tabs
 // var tabs = require('./tabs');
 // tabs.setup(app);
+var port = process.env.PORT || 3333;
 
 app.get('/', function(req, res) {
-    res.send('hello');
+    res.send(`hello ${port}`);
 });
 
 // Decide which port to use
-var port = process.env.PORT || 3333;
 
 // Listen for incoming requests
 app.listen(port, function() {
