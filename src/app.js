@@ -10,7 +10,7 @@ var port = process.env.PORT || 3333;
 
 
 app.get('/', function(req, res) {
-    res.send(`hello ${port}`);
+    res.send(`hello`);
 });
 
 
