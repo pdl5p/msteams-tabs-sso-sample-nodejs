@@ -1,17 +1,17 @@
 {
     "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.5/MicrosoftTeams.schema.json",
     "manifestVersion": "1.5",
-    "version": "1.0.0",
-    "id": "a9edb46f-2b7c-4806-99c7-0f012251b3ed",
-    "packageName": "com.teams-sso.aadSsoSample",
+    "version": "1.0.1",
+    "id": "a9edb46f-2b7c-4806-99c7-0f012251b3ea",
+    "packageName": "com.pdl5p.aadSsoSample",
     "developer": {
-        "name": "Teams SSO",
+        "name": "PDL5P AAD SSO Tab Sample",
         "websiteUrl": "https://www.microsoft.com",
         "privacyUrl": "https://www.microsoft.com/privacy",
         "termsOfUseUrl": "https://www.microsoft.com/termsofuse"
     },
     "name": {
-        "short": "Teams SSO",
+        "short": "SSO DEV",
         "full": "Auth sample app for Microsoft Teams"
     },
     "description": {
@@ -24,17 +24,24 @@
     },
     "accentColor": "#60A18E",
     "staticTabs": [{
-        "entityId": "com.teams-sso.teamsauthsample.static",
-        "name": "SSO Tab",
-        "contentUrl": "https://teams-sso.5papps.com/ssoDemo",
+        "entityId": "com.pdl5p.teamsauthsample.static",
+        "name": "Auth Tab",
+        "contentUrl": "https://pdl5p.au.ngrok.io/ssoDemo",
         "scopes": [
             "personal"
+        ]
+    }],
+    "configurableTabs": [{
+        "configurationUrl": "https://pdl5p.au.ngrok.io/configure",
+        "canUpdateConfiguration": true,
+        "scopes": [
+            "team"
         ]
     }],
     "permissions": [],
     "validDomains": [],
     "webApplicationInfo": {
-        "id": "f5e478ee-77eb-4613-85f9-3b8bd32c1d1f",
-        "resource": "api://teams-sso.5papps.com/f5e478ee-77eb-4613-85f9-3b8bd32c1d1f"
+        "id": "90531a14-6242-4eec-be58-74bd89ce12f3",
+        "resource": "api://pdl5p.au.ngrok.io/90531a14-6242-4eec-be58-74bd89ce12f3"
     }
 }
