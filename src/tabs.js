@@ -45,11 +45,20 @@ module.exports.setup = function(app) {
 
     // On-behalf-of token exchange
     app.post('/auth/token', function(req, res) {
+
+        console.log("body");
+        console.log(req.body);
+
         var tid = req.body.tid;
         var token = req.body.token;
         var scopes = req.body.scopes;
 
         var oboPromise = new Promise((resolve, reject) => {
+
+
+
+
+
             const url = "https://login.microsoftonline.com/" + tid + "/oauth2/v2.0/token";
             const params = {
                 client_id: config.get("tab.appId"),
@@ -59,6 +68,8 @@ module.exports.setup = function(app) {
                 requested_token_use: "on_behalf_of",
                 scope: scopes.join(" ")
             };
+
+            resolve(params);
         
             console.log("getting token", params.scope);
 
