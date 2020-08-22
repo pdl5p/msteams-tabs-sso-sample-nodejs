@@ -47,14 +47,23 @@ module.exports.setup = function(app) {
       res.json({"test": "123"});
     });
     // On-behalf-of token exchange
+
     app.post('/auth/token', function(req, res) {
 
+      var tid = req.body.tid;
+      var token = req.body.token;
+      var scopes = req.body.scopes;
       
-      res.json({"test": "456"});
+      res.json({
+        client_id: config.get("tab.appId"),
+        client_secret: config.get("tab.appPassword"),
+        grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
+        assertion: token,
+        requested_token_use: "on_behalf_of",
+        scope: scopes.join(" ")
+    });
       return;
-        var tid = req.body.tid;
-        var token = req.body.token;
-        var scopes = req.body.scopes;
+        
 
         var oboPromise = new Promise((resolve, reject) => {
 
