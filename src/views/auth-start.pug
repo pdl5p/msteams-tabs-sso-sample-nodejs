@@ -18,11 +18,15 @@ html
             localStorage.removeItem("auth.error");
             // See https://docs.microsoft.com/en-us/azure/active-directory/develop/active-directory-v2-protocols-implicit
             // for documentation on these query parameters
+
+            
+
             let queryParams = {
                 client_id: "#{clientId}",
-                response_type: "id_token token",
+                response_type: "id_token",
+                //response_type: "id_token token",
                 response_mode: "fragment",
-                scope: "https://graph.microsoft.com/User.Read email openid profile offline_access",
+                scope: `https://graph.microsoft.com/User.Read email openid profile offline_access https://${context.teamSiteDomain}/AllSites.Read`,
                 redirect_uri: window.location.origin + "/auth/auth-end",
                 nonce: _guid(),
                 state: state,

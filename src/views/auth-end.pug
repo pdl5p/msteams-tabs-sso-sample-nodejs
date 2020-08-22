@@ -14,11 +14,14 @@ html
         localStorage.removeItem("auth.error");
         let hashParams = getHashParameters();
 
+        console.log(hashParams);
+        
+
         if (hashParams["error"]) {
             // Authentication/authorization failed
             localStorage.setItem("auth.error", JSON.stringify(hashParams));
             microsoftTeams.authentication.notifyFailure(hashParams["error"]);
-        } else if (hashParams["access_token"]) {
+        } else if (hashParams["id_token"]) {
             // Get the stored state parameter and compare with incoming state
             let expectedState = localStorage.getItem("auth.state");
             if (expectedState !== hashParams["state"]) {

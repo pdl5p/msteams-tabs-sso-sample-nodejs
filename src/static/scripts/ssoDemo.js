@@ -1,6 +1,7 @@
 (function () {
     'use strict';
 
+    var clientToken = "";
     // 1. Get auth token
     // Ask Teams to get us a token from AAD
     function getClientSideToken() {
@@ -27,7 +28,50 @@
     //    using the web service (see /auth/token handler in app.js)
     function getServerSideToken(clientSideToken) {
 
-        display("2. Exchange for server-side token");
+        display("2. Exchange for server-side graph token");
+
+        return new Promise((resolve, reject) => {
+
+            microsoftTeams.getContext((context) => {
+
+                console.log(context);
+
+                fetch('/auth/token', {
+                    method: 'post',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        'tid': context.tid,
+                        'token': clientSideToken,
+                        'scopes': ["https://graph.microsoft.com/User.Read"],
+                    }),
+                    mode: 'cors',
+                    cache: 'default'
+                })
+                .then((response) => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        reject(response.error);
+                    }
+                })
+                .then((responseJson) => {
+                    if (responseJson.error) {
+                        reject(responseJson.error);
+                    } else {
+                        const serverSideToken = responseJson;
+                        display(serverSideToken);
+                        resolve(serverSideToken);
+                    }
+                });
+            });
+        });
+    }
+
+    function getSharePointToken(clientSideToken) {
+
+        display("4. Exchange for server-side SharePoint token");
 
         return new Promise((resolve, reject) => {
 
@@ -40,7 +84,8 @@
                     },
                     body: JSON.stringify({
                         'tid': context.tid,
-                        'token': clientSideToken 
+                        'token': clientSideToken,
+                        'scopes': [`https://${context.teamSiteDomain}/AllSites.Read`],
                     }),
                     mode: 'cors',
                     cache: 'default'
@@ -93,6 +138,31 @@
 
     }
 
+    function useSharePointToken(token){
+        display("5. Use SharePoint token");
+
+        return fetch("https://pdl5p.sharepoint.com/_api/web",
+            {
+                method: 'GET',
+                headers: {
+                    "accept": "application/json",
+                    "authorization": "bearer " + token
+                },
+                mode: 'cors',
+                cache: 'default'
+            })
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw (`Error ${response.status}: ${response.statusText}`);
+                }
+            })
+            .then((web) => {
+                display(JSON.stringify(web, undefined, 4), 'pre');
+            });
+    }
+
     // Show the consent pop-up
     function requestConsent() {
         return new Promise((resolve, reject) => {
@@ -125,10 +195,17 @@
     // In-line code
     getClientSideToken()
         .then((clientSideToken) => {
+            clientToken = clientSideToken;
             return getServerSideToken(clientSideToken);
         })
         .then((serverSideToken) => {
             return useServerSideToken(serverSideToken);
+        })
+        .then(() => {
+            return getSharePointToken(clientToken)
+        })
+        .then((sharePointToken) => {
+            return useSharePointToken(sharePointToken);
         })
         .catch((error) => {
             if (error === "invalid_grant") {
@@ -138,10 +215,18 @@
                 button.onclick = (() => {
                     requestConsent()
                         .then((result) => {
+
+                            let data = JSON.parse(result);
+
+                            display(JSON.stringify(data, undefined, 4), 'pre');
+                            
                             // Consent succeeded - use the token we got back
-                            let accessToken = JSON.parse(result).accessToken;
-                            display(`Received access token ${accessToken}`);
-                            useServerSideToken(accessToken);
+                            // let accessToken = data.accessToken;
+                            // display(`Received access token ${accessToken}`);
+                            // useServerSideToken(accessToken);
+
+                            let refreshButton = display("Refresh page", "button");
+                            refreshButton.onclick = (() => { window.location.reload(); });
                         })
                         .catch((error) => {
                             display(`ERROR ${error}`);

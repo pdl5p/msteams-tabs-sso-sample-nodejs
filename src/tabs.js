@@ -47,7 +47,7 @@ module.exports.setup = function(app) {
     app.post('/auth/token', function(req, res) {
         var tid = req.body.tid;
         var token = req.body.token;
-        var scopes = ["https://graph.microsoft.com/User.Read"];
+        var scopes = req.body.scopes;
 
         var oboPromise = new Promise((resolve, reject) => {
             const url = "https://login.microsoftonline.com/" + tid + "/oauth2/v2.0/token";
@@ -60,6 +60,8 @@ module.exports.setup = function(app) {
                 scope: scopes.join(" ")
             };
         
+            console.log("getting token", params.scope);
+
             fetch(url, {
               method: "POST",
               body: querystring.stringify(params),
@@ -68,6 +70,9 @@ module.exports.setup = function(app) {
                 "Content-Type": "application/x-www-form-urlencoded"
               }
             }).then(result => {
+
+              console.log(result.status);
+
               if (result.status !== 200) {
                 result.json().then(json => {
                   // TODO: Check explicitly for invalid_grant or interaction_required
