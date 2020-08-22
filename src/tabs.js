@@ -39,7 +39,7 @@ module.exports.setup = function(app) {
 
     // End of the pop-up dialog auth flow, returns the results back to parent window
     app.get('/auth/auth-end', function(req, res) {
-        var clientId = config.get("tab.appId");
+        var clientId = "f5e478ee-77eb-4613-85f9-3b8bd32c1d1f";
         res.render('auth-end', { clientId: clientId });
     }); 
 
