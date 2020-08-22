@@ -55,8 +55,8 @@ module.exports.setup = function(app) {
       var scopes = req.body.scopes;
       
       res.json({
-        client_id: config.get("tab.appId"),
-        client_secret: config.get("tab.appPassword"),
+        client_id: "",
+        client_secret: "",
         grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
         assertion: token,
         requested_token_use: "on_behalf_of",
